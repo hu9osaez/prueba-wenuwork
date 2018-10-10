@@ -50,3 +50,9 @@ exports.destroy = (req, res) => {
     });
   });
 };
+
+exports.listByCar = (req, res) => {
+  Usuario.find({ auto: req.params.idAuto }).populate('auto').exec((err, usuarios) => {
+    res.json(usuarios);
+  });
+};
