@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Subtitle, Table } from 'bloomer';
 
 export default class Autos extends React.Component {
-  state = { autos: null };
+  state = { autos: [] };
 
   componentDidMount() {
     fetch('/api/autos')
@@ -14,6 +15,9 @@ export default class Autos extends React.Component {
     const { autos } = this.state;
     return (
       <div>
+        <Subtitle isSize={3}>
+          <Link to={'/'}>←</Link>
+        </Subtitle>
         <Subtitle isSize={3}>Autos</Subtitle>
         <Table isBordered isStriped isNarrow className="is-fullwidth">
           <thead>
@@ -25,6 +29,18 @@ export default class Autos extends React.Component {
             </tr>
           </thead>
           <tbody>
+          {
+            autos.map(auto => (
+              <tr key={auto._id}>
+                <td>{auto.marca}</td>
+                <td>{auto.modelo}</td>
+                <td>{auto.anio}</td>
+                <td className="has-text-centered">
+                  <a href="#" className="button is-small is-dark">Editar</a>
+                </td>
+              </tr>
+            ))
+          }
           </tbody>
         </Table>
       </div>
