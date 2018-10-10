@@ -9,11 +9,15 @@ const AutoSchema = new Schema({
   },
   modelo: {
     type: String,
-    required: true
+    required: true,
   },
   anio: {
     type: Number,
-    required: true
+    required: true,
+  },
+  __v: {
+    type: Number,
+    select: false,
   },
 });
 

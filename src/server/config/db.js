@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dbURL = 'mongodb://testuser:Ty23aFbud8kbRj@ds227373.mlab.com:27373/wenuwork';
 
 mongoose.connect(dbURL);
+mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 

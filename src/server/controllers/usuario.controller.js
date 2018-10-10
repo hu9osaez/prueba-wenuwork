@@ -1,5 +1,9 @@
 const Usuario = require('../models/usuario.model');
 
+exports.index = (req, res) => {
+
+};
+
 exports.show = (req, res) => {
 
 };

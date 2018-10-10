@@ -14,8 +14,12 @@ const UsuarioSchema = new Schema({
   },
   auto: {
     type: Schema.ObjectId,
-    ref: 'Auto'
-  }
+    ref: 'Auto',
+  },
+  __v: {
+    type: Number,
+    select: false,
+  },
 });
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);
