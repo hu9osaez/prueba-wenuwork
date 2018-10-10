@@ -51,6 +51,21 @@ export default class ModalEditarAuto extends React.Component {
     }
   }
 
+  eliminarAuto() {
+    const { auto, autoEditado } = this.props;
+
+    if (confirm('¿Confirmas la eliminación de este auto?')) {
+      fetch(`/api/autos/${auto._id}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(data => autoEditado());
+    }
+  }
+
   render() {
     const { isActive, cerrar } = this.props;
     const { marca, modelo, anio } = this.state;
@@ -104,13 +119,26 @@ export default class ModalEditarAuto extends React.Component {
                 </div>
               </div>
             </div>
-            <button
-              type="button"
-              className="button is-info"
-              onClick={() => this.editarAuto()}
-            >
-              Guardar
-            </button>
+            <div className="columns">
+              <div className="column">
+                <button
+                  type="button"
+                  className="button is-info"
+                  onClick={() => this.editarAuto()}
+                >
+                  Guardar
+                </button>
+              </div>
+              <div className="column">
+                <button
+                  type="button"
+                  className="button is-danger is-pulled-right"
+                  onClick={() => this.eliminarAuto()}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
           </ModalCardBody>
         </ModalCard>
       </Modal>

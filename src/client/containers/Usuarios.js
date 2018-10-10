@@ -44,6 +44,18 @@ export default class Usuarios extends React.Component {
       .then(usuarios => this.setState({ usuarios }));
   }
 
+  renderColumnaAuto(auto) {
+    if (auto === null) {
+      return '---';
+    } else {
+      return (
+        <span>
+          {auto.marca} - {auto.modelo} - {auto.anio}
+        </span>
+      );
+    }
+  }
+
   render() {
     const { autos, usuarios, modalAgregar } = this.state;
     const autosList = autos.map(auto => <option value={auto._id} key={auto._id}>{auto.marca} - {auto.modelo} - {auto.anio}</option>);
@@ -94,7 +106,7 @@ export default class Usuarios extends React.Component {
                 <tr key={usuario._id}>
                   <td>{usuario.rut}</td>
                   <td>{usuario.nombre}</td>
-                  <td>{usuario.auto.marca} - {usuario.auto.modelo} - {usuario.auto.anio}</td>
+                  <td>{this.renderColumnaAuto(usuario.auto)}</td>
                   <td className="has-text-centered">
                     <a href="#" className="button is-small is-dark">Editar</a>
                   </td>
