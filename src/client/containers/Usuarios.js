@@ -5,12 +5,15 @@ import {
 import { Link } from 'react-router-dom';
 
 import ModalAgregarUsuario from '../components/ModalAgregarUsuario';
+import ModalEditarUsuario from '../components/ModalEditarUsuario';
 
 export default class Usuarios extends React.Component {
   state = {
     autos: [],
     usuarios: [],
     modalAgregar: false,
+    modalEditar: false,
+    usuarioActivo: {},
   };
 
   constructor() {
@@ -57,7 +60,7 @@ export default class Usuarios extends React.Component {
   }
 
   render() {
-    const { autos, usuarios, modalAgregar } = this.state;
+    const { autos, usuarios, modalAgregar, modalEditar, usuarioActivo } = this.state;
     const autosList = autos.map(auto => <option value={auto._id} key={auto._id}>{auto.marca} - {auto.modelo} - {auto.anio}</option>);
     return (
       <div>
@@ -108,7 +111,13 @@ export default class Usuarios extends React.Component {
                   <td>{usuario.nombre}</td>
                   <td>{this.renderColumnaAuto(usuario.auto)}</td>
                   <td className="has-text-centered">
-                    <a href="#" className="button is-small is-dark">Editar</a>
+                    <button
+                      className="button is-small is-dark"
+                      type="button"
+                      onClick={() => this.setState({usuarioActivo: usuario, modalEditar: true})}
+                    >
+                      Editar
+                    </button>
                   </td>
                 </tr>
               ))
@@ -117,11 +126,21 @@ export default class Usuarios extends React.Component {
         </Table>
         <ModalAgregarUsuario
           isActive={modalAgregar}
-          autosList={autosList}
+          autos={autosList}
           cerrar={() => this.setState({ modalAgregar: false })}
           usuarioAgregado={() => {
             this.loadUsuarios();
             this.setState({ modalAgregar: false });
+          }}
+        />
+        <ModalEditarUsuario
+          isActive={modalEditar}
+          autos={autosList}
+          cerrar={() => this.setState({ usuarioActivo: {}, modalEditar: false })}
+          usuario={usuarioActivo}
+          usuarioEditado={() => {
+            this.loadUsuarios();
+            this.setState({ usuarioActivo: {}, modalEditar: false });
           }}
         />
       </div>
