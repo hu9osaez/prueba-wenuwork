@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { Subtitle, Table } from 'bloomer';
 
 import ModalAgregarAuto from '../components/ModalAgregarAuto';
+import ModalEditarAuto from '../components/ModalEditarAuto';
 
 export default class Autos extends React.Component {
   state = {
     autos: [],
     modalAgregar: false,
+    modalEditar: false,
+    autoActivo: {},
   };
 
   componentDidMount() {
@@ -21,7 +24,7 @@ export default class Autos extends React.Component {
   }
 
   render() {
-    const { autos, modalAgregar } = this.state;
+    const { autos, modalAgregar, modalEditar, autoActivo } = this.state;
     return (
       <div>
         <Subtitle isSize={3}>
@@ -54,7 +57,13 @@ export default class Autos extends React.Component {
                 <td>{auto.modelo}</td>
                 <td>{auto.anio}</td>
                 <td className="has-text-centered">
-                  <a href="#" className="button is-small is-dark">Editar</a>
+                  <button
+                    className="button is-small is-dark"
+                    type="button"
+                    onClick={() => this.setState({autoActivo: auto, modalEditar: true})}
+                  >
+                    Editar
+                  </button>
                 </td>
               </tr>
             ))
@@ -67,6 +76,15 @@ export default class Autos extends React.Component {
           autoAgregado={() => {
             this.loadAutos();
             this.setState({ modalAgregar: false });
+          }}
+        />
+        <ModalEditarAuto
+          isActive={modalEditar}
+          cerrar={() => this.setState({ autoActivo: {}, modalEditar: false })}
+          auto={autoActivo}
+          autoEditado={() => {
+            this.loadAutos();
+            this.setState({ autoActivo: {}, modalEditar: false });
           }}
         />
       </div>
