@@ -4,10 +4,13 @@ import {
 } from 'bloomer';
 import { Link } from 'react-router-dom';
 
+import ModalAgregarUsuario from '../components/ModalAgregarUsuario';
+
 export default class Usuarios extends React.Component {
   state = {
     autos: [],
-    usuarios: []
+    usuarios: [],
+    modalAgregar: false,
   };
 
   constructor() {
@@ -16,10 +19,7 @@ export default class Usuarios extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/usuarios')
-      .then(res => res.json())
-      .then(usuarios => this.setState({ usuarios }));
-
+    this.loadUsuarios();
     fetch('/api/autos')
       .then(res => res.json())
       .then(autos => this.setState({ autos }));
@@ -28,22 +28,24 @@ export default class Usuarios extends React.Component {
   onChangeSelect(event) {
     const idAuto = event.target.value;
 
-    console.log(idAuto);
-
     if (idAuto) {
       fetch(`/api/usuarios/listByCar/${idAuto}`)
         .then(res => res.json())
         .then(usuarios => this.setState({ usuarios }));
     }
     else {
-      fetch('/api/usuarios')
-        .then(res => res.json())
-        .then(usuarios => this.setState({ usuarios }));
+      this.loadUsuarios();
     }
   }
 
+  loadUsuarios() {
+    fetch('/api/usuarios')
+      .then(res => res.json())
+      .then(usuarios => this.setState({ usuarios }));
+  }
+
   render() {
-    const { autos, usuarios } = this.state;
+    const { autos, usuarios, modalAgregar } = this.state;
     const autosList = autos.map(auto => <option value={auto._id} key={auto._id}>{auto.marca} - {auto.modelo} - {auto.anio}</option>);
     return (
       <div>
@@ -68,6 +70,15 @@ export default class Usuarios extends React.Component {
             </div>
           </Column>
         </Columns>
+        <p className="mbottom-medium">
+          <button
+            className="button is-outlined is-info"
+            type="button"
+            onClick={() => this.setState({ modalAgregar: true })}
+          >
+            Agregar usuario
+          </button>
+        </p>
         <Table isBordered isStriped isNarrow className="is-fullwidth">
           <thead>
             <tr>
@@ -92,6 +103,15 @@ export default class Usuarios extends React.Component {
             }
           </tbody>
         </Table>
+        <ModalAgregarUsuario
+          isActive={modalAgregar}
+          autosList={autosList}
+          cerrar={() => this.setState({ modalAgregar: false })}
+          usuarioAgregado={() => {
+            this.loadUsuarios();
+            this.setState({ modalAgregar: false });
+          }}
+        />
       </div>
     );
   }
