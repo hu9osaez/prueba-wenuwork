@@ -38,7 +38,8 @@ module.exports = {
     open: true,
     proxy: {
       '/api': 'http://localhost:7000'
-    }
+    },
+    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
